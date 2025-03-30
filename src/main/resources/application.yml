@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: spring_1_5
+answers:
+  for:
+    pass: 2
