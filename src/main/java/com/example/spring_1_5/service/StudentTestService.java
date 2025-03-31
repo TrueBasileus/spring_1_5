@@ -3,8 +3,6 @@ package com.example.spring_1_5.service;
 import com.example.spring_1_5.domain.Answer;
 import com.example.spring_1_5.domain.Question;
 import com.example.spring_1_5.domain.QuestionBook;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
