@@ -24,6 +24,9 @@ public class StudentTestService {
 
     int correctAnswersForPass;
     private MessageSource messageSource;
+    public StudentTestService(){
+
+    }
     @Autowired
     public StudentTestService(@Value("${answers.for.pass}") int correctAnswersForPass, MessageSource messageSource){
         this.messageSource = messageSource;
