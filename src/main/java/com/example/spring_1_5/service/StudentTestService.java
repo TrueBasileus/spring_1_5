@@ -21,12 +21,13 @@ import java.util.stream.Collectors;
 @Service
 @Setter
 public class StudentTestService {
-    @Value("${answers.for.pass}")
+
     int correctAnswersForPass;
     private MessageSource messageSource;
     @Autowired
-    public StudentTestService(MessageSource messageSource){
+    public StudentTestService(@Value("${answers.for.pass}") int correctAnswersForPass, MessageSource messageSource){
         this.messageSource = messageSource;
+        this.correctAnswersForPass = correctAnswersForPass;
     }
     public String test(QuestionBook questions) {
         System.out.println(messageSource.getMessage("initial.message", null, Locale.getDefault()));
