@@ -1,43 +1,47 @@
 package com.example.spring_1_5.service;
 
 
+import com.example.spring_1_5.dao.impl.QuestionBookDaoImpl;
 import com.example.spring_1_5.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class QuestionBookServiceTest {
+@TestPropertySource(properties = {
+        "questions.amount=2"
+        })
+public class QuestionBookDaoImplTest {
 
     @MockBean
     private MessageSource messageSource;
 
     @Autowired
-    private QuestionBookService questionBookService;
+    private QuestionBookDaoImpl questionBookDaoImpl;
 
 
     @Test
     public void testLoadQuestions() {
-        // Настройка Mock-объектов
-        when(messageSource.getMessage("survey.question1", null, Locale.getDefault()))
+        when(messageSource.getMessage(eq("survey.question1"), any(), any()))
                 .thenReturn("What is your name?");
-        when(messageSource.getMessage("survey.answer1", null, Locale.getDefault()))
+        when(messageSource.getMessage(eq("survey.answer1"), any(), any()))
                 .thenReturn("Alice,Bob,Charlie");
-
-        when(messageSource.getMessage("survey.question2", null, Locale.getDefault()))
+        when(messageSource.getMessage(eq("survey.question2"), any(), any()))
                 .thenReturn("What is your favorite color?");
-        when(messageSource.getMessage("survey.answer2", null, Locale.getDefault()))
+        when(messageSource.getMessage(eq("survey.answer2"), any(), any()))
                 .thenReturn("Red,Green,Blue");
 
-        List<Question> questions = questionBookService.loadQuestions().getQuestions();
+        List<Question> questions = questionBookDaoImpl.getAllQuestions();
 
         assertEquals(2, questions.size());
 
