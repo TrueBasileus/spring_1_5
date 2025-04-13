@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Setter
 public class StudentTestServiceImpl implements StudentTestService {
 
-    int correctAnswersForPass;
+    private int correctAnswersForPass;
     private MessageSource messageSource;
     private IOService ioService;
 

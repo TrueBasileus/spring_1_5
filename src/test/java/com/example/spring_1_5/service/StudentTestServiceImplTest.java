@@ -21,7 +21,7 @@ import java.util.Locale;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class StudentTestServiceTest {
+public class StudentTestServiceImplTest {
 
     @Autowired
     private StudentTestServiceImpl service;
