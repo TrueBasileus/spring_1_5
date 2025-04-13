@@ -13,6 +13,7 @@ import java.util.List;
 public class QuestionBookServiceImpl implements QuestionBookService {
     private final QuestionBookDao questionBookDao;
 
+    @Override
     public List<Question> getAllQuestions() {
         return questionBookDao.getAllQuestions();
     }
