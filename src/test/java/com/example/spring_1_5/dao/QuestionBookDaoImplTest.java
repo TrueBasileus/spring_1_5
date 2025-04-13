@@ -1,4 +1,4 @@
-package com.example.spring_1_5.service;
+package com.example.spring_1_5.dao;
 
 
 import com.example.spring_1_5.dao.impl.QuestionBookDaoImpl;
