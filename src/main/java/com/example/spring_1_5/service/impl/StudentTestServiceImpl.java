@@ -1,5 +1,6 @@
 package com.example.spring_1_5.service.impl;
 
+import com.example.spring_1_5.dao.QuestionBookDao;
 import com.example.spring_1_5.domain.Answer;
 import com.example.spring_1_5.domain.Question;
 import com.example.spring_1_5.service.IOService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,25 +26,31 @@ public class StudentTestServiceImpl implements StudentTestService {
     private int correctAnswersForPass;
     private MessageSource messageSource;
     private IOService ioService;
+    private QuestionBookDao questionBookDao;
+    private Locale locale;
 
     public StudentTestServiceImpl() {
 
     }
 
     @Autowired
-    public StudentTestServiceImpl(@Value("${answers.for.pass}") int correctAnswersForPass, MessageSource messageSource, IOService ioService) {
+    public StudentTestServiceImpl(@Value("${answers.for.pass}") int correctAnswersForPass, MessageSource messageSource, IOService ioService, QuestionBookDao questionBookDao, Locale locale) {
         this.messageSource = messageSource;
         this.correctAnswersForPass = correctAnswersForPass;
         this.ioService = ioService;
+        this.questionBookDao = questionBookDao;
+        this.locale = locale;
     }
 
+
     @Override
-    public String test(List<Question> questions) {
-        ioService.println(messageSource.getMessage("student.name.request", null, Locale.getDefault()));
+    public String test() {
+        ioService.println(messageSource.getMessage("student.name.request", null, locale));
         String studentName = ioService.readString();
 
-        ioService.println(messageSource.getMessage("initial.message", new Object[]{studentName}, Locale.getDefault()));
+        ioService.println(messageSource.getMessage("initial.message", new Object[]{studentName}, locale));
         int correctAnswers = 0;
+        List<Question> questions = questionBookDao.getAllQuestions();
         for (Question question : questions) {
             System.out.print(question.getTextQuestion() + " ");
             List<String> answers = question.getAnswers().stream().map(Answer::toString).collect(Collectors.toList());
@@ -55,7 +64,7 @@ public class StudentTestServiceImpl implements StudentTestService {
                 correctAnswers++;
             }
         }
-        String str = correctAnswers < correctAnswersForPass ? messageSource.getMessage("test.failed.message", null, Locale.getDefault()) : messageSource.getMessage("test.passed.message", null, Locale.getDefault());
+        String str = correctAnswers < correctAnswersForPass ? messageSource.getMessage("test.failed.message", null, locale) : messageSource.getMessage("test.passed.message", null, locale);
         ioService.println(str);
         return str;
 

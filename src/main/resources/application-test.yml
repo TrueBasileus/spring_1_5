@@ -1,0 +1,7 @@
+app:
+  default-locale: en
+  questions-basename: questions-test
+
+answers:
+  for:
+    pass: 2

@@ -3,6 +3,7 @@ package com.example.spring_1_5.service;
 
 
 
+import com.example.spring_1_5.dao.QuestionBookDao;
 import com.example.spring_1_5.domain.Answer;
 import com.example.spring_1_5.domain.Question;
 import com.example.spring_1_5.service.impl.StudentTestServiceImpl;
@@ -16,11 +17,12 @@ import org.springframework.context.MessageSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 public class StudentTestServiceImplTest {
 
     @Autowired
@@ -29,6 +31,8 @@ public class StudentTestServiceImplTest {
     private MessageSource messageSource;
     @MockBean
     private IOService ioService;
+    @MockBean
+    private QuestionBookDao questionBookDao;
 
 
     @BeforeEach
@@ -44,13 +48,15 @@ public class StudentTestServiceImplTest {
 
         testQuestions.add(new Question("The 2 most populated cities in Russia", List.of(new Answer("Moscow"), new Answer("Saint-Petersburg"))));
 
-        when(messageSource.getMessage("test.passed.message", null, Locale.getDefault()))
+
+        when(questionBookDao.getAllQuestions()).thenReturn(testQuestions);
+        when(messageSource.getMessage(eq("test.passed.message"), any(), any()))
                 .thenReturn("Test passed");
         when(ioService.readString())
                 .thenReturn(studentName)
                 .thenReturn(answers);
 
-        String result = service.test(testQuestions);
+        String result = service.test();
 
         Assertions.assertEquals("Test passed", result);
     }
@@ -63,14 +69,15 @@ public class StudentTestServiceImplTest {
 
         testQuestions.add(new Question("The 2 most populated cities in Russia", List.of(new Answer("Moscow"), new Answer("Saint-Petersburg"))));
 
-        when(messageSource.getMessage("test.failed.message", null, Locale.getDefault()))
+        when(questionBookDao.getAllQuestions()).thenReturn(testQuestions);
+        when(messageSource.getMessage(eq("test.failed.message"), any(), any()))
                 .thenReturn("Test failed");
         when(ioService.readString())
                 .thenReturn(studentName)
                 .thenReturn(answers);
 
 
-        String result = service.test(testQuestions);
+        String result = service.test();
 
         Assertions.assertEquals("Test failed", result);
     }
